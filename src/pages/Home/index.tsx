@@ -78,29 +78,32 @@ export default function Home() {
     <div className={styles.bodyArea}>
       {isAuthenticated === 'true' ? (
   <div className={styles.bodyArea}>
-    <h1 className={styles.title}>Copiar e Colar</h1>
-    <input
-      placeholder="Seu texto <3"
-      type="text"
-      name="text"
-      className={styles.input}
-      value={text}
-      onChange={(e) => setText(e.target.value)}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter') {
-          handleSendText();
-        }
-      }}
-    ></input>
-    
-    <button onClick={handleSendText}>
-      <span className="circle1"></span>
-      <span className="circle2"></span>
-      <span className="circle3"></span>
-      <span className="circle4"></span>
-      <span className="circle5"></span>
-      <span className="text">Enviar</span>
-    </button>
+    <div className={styles.topArea}>
+      <h1 className={styles.title}>Copiar e Colar</h1>
+      <input
+        placeholder="Seu texto <3"
+        type="text"
+        name="text"
+        className={styles.input}
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            handleSendText();
+          }
+        }}
+      ></input>
+      
+      <button onClick={handleSendText}>
+        <span className="circle1"></span>
+        <span className="circle2"></span>
+        <span className="circle3"></span>
+        <span className="circle4"></span>
+        <span className="circle5"></span>
+        <span className="text">Enviar</span>
+      </button>
+      
+      </div>
     <div className={styles.messageArea}>
       {messages.length === 0 ? (
         <div className={styles.noMessage}>

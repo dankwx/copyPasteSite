@@ -6,6 +6,16 @@ body {
     overflow-y: auto;
     overflow-x: hidden;
   .bodyArea {
+    
+    .topArea{
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      height: auto;
+      justify-content: center;
+      align-items: center;
+      // background-color: green;
+    }
     height: auto;
     overflow-x: hidden;
     overflow-y: auto;
@@ -43,10 +53,12 @@ body {
     box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.2);
     padding: 1em 1em;
     transition: transform 0.3s; /* Adicionando transição para um efeito mais suave */
+    transition: all 0.5s ease;
 
     &:hover {
         transform: scale(1.05); /* Ajuste o valor conforme necessário para obter o efeito desejado */
         box-shadow: 0 6px 7px 0 rgba(255, 0, 127, 0.2); /* Cor rosa: rgba(255, 0, 127, 0.2) */
+        background: white;
     }
 
     span {
