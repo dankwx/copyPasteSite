@@ -15,7 +15,7 @@ import Login from "../Login";
 
 import styles from "./Home.module.scss";
 import copy from "clipboard-copy";
-import yay from "./piffle-cute.gif";
+// import yay from "./piffle-cute.gif";
 import scaramouche from "./scaramouche.png"
 
 export default function Home() {
@@ -122,7 +122,6 @@ export default function Home() {
     {copySuccess && (
       <div className={styles.copyMessage}>
         Texto copiado com sucesso!
-        <img src={yay} alt="" />
       </div>
     )}
   </div>

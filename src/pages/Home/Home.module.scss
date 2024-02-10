@@ -3,41 +3,60 @@
 body {
   width: 100vw;
   height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
   .bodyArea {
-    width: 100vw;
-    height: 100vh;
-    overflow: auto;
+    height: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
     font-family: "Lato", sans-serif;
     align-items: center;
     background-color: #f3cfce;
+    padding: 0 1em;
 
     .messageArea {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       align-items: center;
+      justify-content: center;
       background-color: #ebe7e3;
-      width: 100%;
-      height: 100%;
+      max-width: 100%;
+      height: auto;
+      flex-wrap: wrap;
+      gap: 1em;
       .singleMessage {
-        display: flex;
-        justify-content: center;
-        border: #171717;
-        border-style: solid;
-        border-width: 1px;
-        width: 95%;
-        min-height: 2rem;
-        max-height: 8rem;
-        overflow: auto;
-        margin-top: 1rem;
-        margin-bottom: 1rem;
-        span {
-          color: #e69694;
-          font-size: 1.1rem;
-          font-weight: bold;
-        }
-      }
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    border: #171717;
+    border-style: solid;
+    border-width: 0px;
+    background: #e4e3e3da;
+    width: 32%;
+    height: 22em;
+    overflow: auto;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 6px;
+    box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.2);
+    padding: 1em 1em;
+    transition: transform 0.3s; /* Adicionando transição para um efeito mais suave */
+
+    &:hover {
+        transform: scale(1.05); /* Ajuste o valor conforme necessário para obter o efeito desejado */
+        box-shadow: 0 6px 7px 0 rgba(255, 0, 127, 0.2); /* Cor rosa: rgba(255, 0, 127, 0.2) */
+    }
+
+    span {
+        color: black;
+        font-size: 1.1rem;
+        font-weight: bold;
+        padding: 0 1em;
+        word-break: break-word;
+    }
+}
     }
   }
 
@@ -56,17 +75,18 @@ body {
     height: 45px;
     padding: 12px;
     border-radius: 12px;
-    border: 1.5px solid lightgrey;
+    border: 2px solid lightgrey;
     outline: none;
     transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
     box-shadow: 0px 0px 20px -18px;
     margin-bottom: 3%;
+    box-sizing: border-box;
   }
 
-  .input:hover {
-    border: 2px solid lightgrey;
-    box-shadow: 0px 0px 20px -17px;
-  }
+  // .input:hover {
+  //   border: 2px solid lightgrey;
+  //   box-shadow: 0px 0px 6px -17px;
+  // }
 
   .input:active {
     transform: scale(0.95);
@@ -74,6 +94,7 @@ body {
 
   .input:focus {
     border: 2px solid #e69694;
+    box-shadow: 0px 0px 0px  0px;
   }
 }
 
