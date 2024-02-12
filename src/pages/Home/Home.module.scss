@@ -3,11 +3,10 @@
 body {
   width: 100vw;
   height: 100vh;
-    overflow-y: auto;
-    overflow-x: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
   .bodyArea {
-    
-    .topArea{
+    .topArea {
       width: 100%;
       display: flex;
       flex-direction: column;
@@ -38,38 +37,78 @@ body {
       gap: 1em;
       border-radius: 10px;
       .singleMessage {
-    box-sizing: border-box;
-    display: flex;
-    justify-content: center;
-    border: #171717;
-    border-style: solid;
-    border-width: 0px;
-    background: #e4e3e3da;
-    width: 32%;
-    height: 22em;
-    overflow: auto;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-    border-radius: 6px;
-    box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.2);
-    padding: 1em 1em;
-    transition: transform 0.3s; /* Adicionando transição para um efeito mais suave */
-    transition: all 0.5s ease;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        border: #171717;
+        border-style: solid;
+        border-width: 0px;
+        background: #e4e3e3da;
+        width: 32%;
+        height: 22em;
+        overflow: auto;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        border-radius: 6px;
+        box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.2);
+        padding: 1em 1em;
+        transition: transform 0.3s; /* Adicionando transição para um efeito mais suave */
+        transition: all 0.5s ease;
 
-    &:hover {
-        transform: scale(1.05); /* Ajuste o valor conforme necessário para obter o efeito desejado */
-        box-shadow: 0 6px 7px 0 rgba(255, 0, 127, 0.2); /* Cor rosa: rgba(255, 0, 127, 0.2) */
-        background: white;
-    }
+        &:hover {
+          transform: scale(
+            1.05
+          ); /* Ajuste o valor conforme necessário para obter o efeito desejado */
+          box-shadow: 0 6px 7px 0 rgba(255, 0, 127, 0.2); /* Cor rosa: rgba(255, 0, 127, 0.2) */
+          background: white;
+        }
 
-    span {
-        color: black;
-        font-size: 1.1rem;
-        font-weight: bold;
-        padding: 0 1em;
-        word-break: break-word;
-    }
-}
+        span {
+          color: black;
+          font-size: 1.1rem;
+          font-weight: bold;
+          padding: 0 1em;
+          word-break: break-word;
+        }
+
+        .linkMessage {
+          font-size: 1.1rem;
+          font-weight: bold;
+          padding: 0 1em;
+          text-decoration: none;
+          color: #e69694;
+        }
+
+        .upperArea {
+          display: flex;
+          background-color: #171717;
+          width: 100%;
+          height: 15%;
+          min-height: 15%;
+          border-radius: 15px;
+          background-color: #d1d1d1da;
+          align-items: center;
+          justify-content: end;
+
+          svg {
+            width: 25px;
+            padding-right: 1em;
+            transition: transform 0.3s; /* Adicionando transição para um efeito mais suave */
+            transition: all 0.2s ease;
+            cursor: pointer;
+          }
+          svg:hover {
+            transform: scale(1.3); /* Aumenta em 10% */
+            filter: brightness(1.2); /* Aumenta o brilho em 20% */
+          }
+        }
+
+        .contentArea {
+          display: flex;
+
+          padding-top: 1em;
+        }
+      }
     }
   }
 
@@ -107,7 +146,7 @@ body {
 
   .input:focus {
     border: 2px solid #e69694;
-    box-shadow: 0px 0px 0px  0px;
+    box-shadow: 0px 0px 0px 0px;
   }
 }
 
@@ -124,7 +163,7 @@ button {
   margin-bottom: 3%;
 }
 //ativar este apenas no pc depois
-.bodyArea::-webkit-scrollbar { 
+.bodyArea::-webkit-scrollbar {
   width: 0em;
 }
 
@@ -167,7 +206,7 @@ button {
   font-size: 1.4rem;
 }
 
-.noMessage{
+.noMessage {
   width: 100%;
   height: 100%;
   display: flex;
