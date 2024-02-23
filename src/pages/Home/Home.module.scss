@@ -5,7 +5,15 @@ body {
   height: 100vh;
   overflow-y: auto;
   overflow-x: hidden;
+  background: #ffd8e6;
+  background-image: url(https://static.tumblr.com/298234d…/xasppo4/JgZongpkl/tumblr_static_8am6mskgbl8o0wsc8cc0gkckc.png);
+  background-attachment: fixed;
+  background-repeat: repeat;
   .bodyArea {
+    background: #ffd8e6;
+    background-image: url(https://static.tumblr.com/298234d…/xasppo4/JgZongpkl/tumblr_static_8am6mskgbl8o0wsc8cc0gkckc.png);
+    background-attachment: fixed;
+    background-repeat: repeat;
     .topArea {
       width: 100%;
       display: flex;
@@ -22,7 +30,10 @@ body {
     flex-direction: column;
     font-family: "Lato", sans-serif;
     align-items: center;
-    background-color: #f3cfce;
+    background: #ffd8e6;
+    background-image: url(https://static.tumblr.com/298234d56fa96aae616886c70a2760f5/xasppo4/JgZongpkl/tumblr_static_8am6mskgbl8o0wsc8cc0gkckc.png);
+    background-attachment: fixed;
+    background-repeat: repeat;
     padding: 0 1em;
 
     .messageArea {
