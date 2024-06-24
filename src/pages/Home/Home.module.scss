@@ -96,15 +96,13 @@ body {
 
         .upperArea {
           display: flex;
-          width: 100%;
           height: 15%;
           min-height: 15%;
           border-radius: 15px;
           background-color: #e69694;
           align-items: center;
-          justify-content: end;
           margin-bottom: 1em;
-
+          padding-left: 2rem;
           svg {
             width: 25px;
             padding-right: 1em;
@@ -115,6 +113,20 @@ body {
           svg:hover {
             transform: scale(1.3); /* Aumenta em 10% */
             filter: brightness(1.2); /* Aumenta o brilho em 20% */
+          }
+
+          .messageCategory {
+            white-space: nowrap;
+            color: rgb(255, 255, 255);
+            font-weight: bold;
+            font-size: 1.1em;
+          }
+          .svgArea {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: end;
+            height: 100%;
           }
         }
 
