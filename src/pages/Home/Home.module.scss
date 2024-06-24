@@ -40,7 +40,7 @@ body {
       display: flex;
       flex-direction: row;
       align-items: center;
-      background-color: #ebe7e3;
+
       max-width: 100%;
       min-width: 70rem;
       height: auto;
@@ -64,7 +64,7 @@ body {
         box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.2);
         padding: 1em 1em;
         transition: transform 0.3s; /* Adicionando transição para um efeito mais suave */
-        transition: all 0.5s ease;
+        transition: all 0.2s ease;
 
         &:hover {
           transform: scale(
