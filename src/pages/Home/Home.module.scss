@@ -40,9 +40,9 @@ body {
       display: flex;
       flex-direction: row;
       align-items: center;
-      justify-content: center;
       background-color: #ebe7e3;
       max-width: 100%;
+      min-width: 70rem;
       height: auto;
       flex-wrap: wrap;
       gap: 1em;
@@ -265,7 +265,7 @@ button {
       }
       .messageArea {
         .singleMessage {
-          width: 90%;
+          width: 35%;
           overflow-x: hidden;
           .linkMessage {
             word-wrap: break-all;
