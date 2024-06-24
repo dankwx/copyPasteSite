@@ -23,24 +23,32 @@ import { Timestamp } from "firebase/firestore";
 import styles from "./Home.module.scss";
 import copy from "clipboard-copy";
 
+interface Message {
+  message: string;
+  category: string;
+  timestamp: Timestamp;
+}
+
 export default function Home() {
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  const [messages, setMessages] = useState<string[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [text, setText] = useState<string>("");
   const [copySuccess, setCopySuccess] = useState(false);
   const isAuthenticated = localStorage.getItem("authenticated");
+  const [category, setCategory] = useState<string>("Links"); // Estado inicial, pode ser ajustado conforme necessário
 
   const handleSendText = async () => {
     if (text.trim() !== "") {
       try {
         const now = Timestamp.now();
-        const formattedText = text.replace(/\n/g, "<br>"); // Substituir quebras de linha
+        const formattedText = text.replace(/\n/g, "<br>");
         const docRef: DocumentReference = await addDoc(
           collection(db, "messages"),
           {
             message: formattedText,
+            category: category,
             timestamp: now,
           }
         );
@@ -56,10 +64,16 @@ export default function Home() {
     const q = query(collection(db, "messages"), orderBy("timestamp", "desc"));
 
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      const messageData: string[] = [];
+      const messageData: Message[] = []; // Alteração aqui para usar o tipo Message
       querySnapshot.forEach((doc) => {
         const message = doc.data().message;
-        messageData.push(message);
+        const category = doc.data().category;
+        const timestamp = doc.data().timestamp;
+        messageData.push({
+          message: message,
+          category: category,
+          timestamp: timestamp,
+        });
       });
       setMessages(messageData);
     });
@@ -69,8 +83,9 @@ export default function Home() {
     };
   }, [db]);
 
-  const handleCopyText = (message: string) => {
-    const formattedMessage = message.replace(/\n/g, "<br>");
+  const handleCopyText = (message: Message) => {
+    // Alteração aqui para usar o tipo Message
+    const formattedMessage = message.message.replace(/\n/g, "<br>");
 
     copy(formattedMessage)
       .then(() => {
@@ -87,33 +102,36 @@ export default function Home() {
     return pattern.test(str);
   };
 
-  const LinkWrapper: React.FC<{ message: string }> = ({ message }) => {
-    const isMessageLink = isLink(message);
+  const LinkWrapper: React.FC<{ message: Message }> = ({ message }) => {
+    // Alteração aqui para usar o tipo Message
+    const isMessageLink = isLink(message.message);
 
     if (isMessageLink) {
       return (
         <a
-          href={message}
+          href={message.message}
           className={styles.linkMessage}
           target="_blank"
           rel="noopener noreferrer"
         >
-          {message}
+          {message.message}
         </a>
       );
     } else {
-      // Utilizando dangerouslySetInnerHTML para renderizar HTML de forma segura
-      return <span dangerouslySetInnerHTML={{ __html: message }} />;
+      return <span dangerouslySetInnerHTML={{ __html: message.message }} />;
     }
   };
 
-  const handleDeleteMessage = async (message: string) => {
+  const handleDeleteMessage = async (message: Message) => {
+    // Alteração aqui para usar o tipo Message
     try {
       const messagesCollection = collection(db, "messages");
       const q = query(messagesCollection, orderBy("timestamp", "desc"));
       const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(q);
       const docToDelete: QueryDocumentSnapshot<DocumentData> | undefined =
-        querySnapshot.docs.find((doc) => doc.data().message === message);
+        querySnapshot.docs.find(
+          (doc) => doc.data().message === message.message
+        );
 
       if (docToDelete) {
         await deleteDoc(doc(db, "messages", docToDelete.id));
@@ -140,7 +158,15 @@ export default function Home() {
               }
             }}
           ></textarea>
-
+          <select
+            name="category"
+            id="category"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+          >
+            <option value="Links">Links</option>
+            <option value="Paleta de Cor">Paleta de Cor</option>
+          </select>
           <button onClick={handleSendText}>
             <span className="circle1"></span>
             <span className="circle2"></span>
@@ -159,6 +185,9 @@ export default function Home() {
             messages.map((message, index) => (
               <div className={styles.singleMessage} key={index}>
                 <div className={styles.upperArea}>
+                  {/* Aqui você exibe apenas a categoria */}
+                  {message.category}
+
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
