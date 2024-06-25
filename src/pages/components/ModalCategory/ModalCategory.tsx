@@ -3,6 +3,7 @@ import styles from "./ModalCategory.module.scss";
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, addDoc, getDocs } from "firebase/firestore";
 import firebaseConfig from "../../../firebaseConfig";
+import { getAuth } from "firebase/auth";
 
 interface ModalProps {
   isOpen: boolean;
@@ -25,14 +26,21 @@ const ModalCategory: React.FC<ModalProps> = ({
 }) => {
   const [categories, setCategories] = useState<string[]>([]);
   const [newCategory, setNewCategory] = useState<string>(""); // Estado para o valor do novo input de categoria
+  const [dbCollection, setDbCollection] = useState<string>("messagos");
+  const [dbCategories, setDbCategories] = useState<string>("categorios");
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
 
   useEffect(() => {
     const fetchCategories = async () => {
+      if (auth.currentUser) {
+        setDbCategories("categories");
+      } else {
+        setDbCategories("categorios");
+      }
       try {
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        const categoriesCollection = collection(db, "categories");
+        const categoriesCollection = collection(db, dbCategories);
         const categoriesSnapshot = await getDocs(categoriesCollection);
         const categoriesList: string[] = [];
         categoriesSnapshot.forEach((doc) => {
@@ -57,7 +65,7 @@ const ModalCategory: React.FC<ModalProps> = ({
       const app = initializeApp(firebaseConfig);
       const db = getFirestore(app);
 
-      const docRef = await addDoc(collection(db, "categories"), {
+      const docRef = await addDoc(collection(db, dbCategories), {
         category: newCategory.trim(), // Adicionar a nova categoria ao Firestore
       });
       console.log("Document written with ID: ", docRef.id);

@@ -48,46 +48,57 @@ export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalCategoryOpen, setIsModalCategoryOpen] = useState(false);
   const [dbCollection, setDbCollection] = useState<string>("messagos");
+  const [dbCategories, setDbCategories] = useState<string>("categorios");
+  const [authStateChangedComplete, setAuthStateChangedComplete] =
+    useState(false);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
         setLoggedUser(user.email);
         setDbCollection("messages");
+        setDbCategories("categories"); // Atualiza dbCategories para "categories" quando logado
       } else {
         setLoggedUser(null);
         setDbCollection("messagos");
+        setDbCategories("categorios"); // Atualiza dbCategories para "categorios" quando deslogado
       }
+      setAuthStateChangedComplete(true); // Marca como completo após a execução
     });
 
     return () => unsubscribe();
   }, [auth]);
 
   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const categoriesCollection = collection(db, "categories");
-        const categoriesSnapshot = await getDocs(categoriesCollection);
-        const categoriesList: string[] = [];
-        categoriesSnapshot.forEach((doc) => {
-          const categoryData = doc.data();
-          categoriesList.push(categoryData.category);
-        });
-        setCategories(categoriesList);
-        if (categoriesList.length > 0) {
-          setCategory(categoriesList[0]);
+    if (authStateChangedComplete) {
+      const fetchCategories = async () => {
+        try {
+          const categoriesCollection = collection(db, dbCategories); // Usa o valor atualizado de dbCategories
+          const categoriesSnapshot = await getDocs(categoriesCollection);
+          const categoriesList: string[] = [];
+          categoriesSnapshot.forEach((doc) => {
+            const categoryData = doc.data();
+            categoriesList.push(categoryData.category);
+          });
+          setCategories(categoriesList);
+          if (categoriesList.length > 0) {
+            setCategory(categoriesList[0]);
+          }
+        } catch (error) {
+          console.error("Error fetching categories:", error);
         }
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      }
-    };
+      };
 
-    fetchCategories();
-  }, [db]);
+      fetchCategories();
+    }
+  }, [authStateChangedComplete, dbCategories, db]);
 
   useEffect(() => {
     const fetchMessages = async () => {
-      const q = query(collection(db, dbCollection), orderBy("timestamp", "desc"));
+      const q = query(
+        collection(db, dbCollection),
+        orderBy("timestamp", "desc")
+      );
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const messageData: Message[] = [];
         querySnapshot.forEach((doc) => {
@@ -175,7 +186,11 @@ export default function Home() {
 
   const handleDeleteMessage = async (message: Message) => {
     try {
-      const messagesCollection = collection(db, "messages");
+      if (!authStateChangedComplete) {
+        console.error("Aguardando a conclusão da autenticação...");
+        return;
+      }
+      const messagesCollection = collection(db, dbCollection);
       const q = query(messagesCollection, orderBy("timestamp", "desc"));
       const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(q);
       const docToDelete: QueryDocumentSnapshot<DocumentData> | undefined =
@@ -184,7 +199,7 @@ export default function Home() {
         );
 
       if (docToDelete) {
-        await deleteDoc(doc(db, "messages", docToDelete.id));
+        await deleteDoc(doc(db, dbCollection, docToDelete.id));
       }
     } catch (error) {
       console.error("Erro ao excluir mensagem:", error);
