@@ -28,6 +28,13 @@ body {
         padding: 1em;
         border-radius: 10px;
         margin-top: 1em;
+
+        .filterSection {
+          button {
+            margin-left: 1em;
+            width: 30%;
+          }
+        }
       }
     }
     height: auto;
@@ -285,8 +292,18 @@ select {
           background-color: rgba(255, 255, 255, 0.8);
           padding: 1em;
           border-radius: 10px;
-          .title{
+          .title {
             text-align: center;
+          }
+          .filterSection {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            button {
+              margin-top: 1rem;
+              width: 100%;
+            }
           }
         }
         .textArea {

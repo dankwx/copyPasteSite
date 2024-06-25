@@ -23,6 +23,7 @@ import { Timestamp } from "firebase/firestore";
 import styles from "./Home.module.scss";
 import copy from "clipboard-copy";
 import Modal from "../components/Modal/Modal";
+import ModalCategory from "../components/ModalCategory/ModalCategory";
 
 interface Message {
   message: string;
@@ -38,9 +39,11 @@ export default function Home() {
   const [text, setText] = useState<string>("");
   const [copySuccess, setCopySuccess] = useState(false);
   const isAuthenticated = localStorage.getItem("authenticated");
-  const [category, setCategory] = useState<string>("Links"); // Estado inicial, pode ser ajustado conforme necessário
-  const [filterCategory, setFilterCategory] = useState<string>("Todos"); // Estado para controlar a categoria de filtro
+  const [categories, setCategories] = useState<string[]>([]); // Estado para armazenar as categorias
+  const [category, setCategory] = useState<string>(""); // Estado inicial para a categoria selecionada
+  const [filterCategory, setFilterCategory] = useState<string>("Geral");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModaCategorylOpen, setIsModaCategorylOpen] = useState(false);
 
   const handleSendText = async () => {
     if (text.trim() !== "") {
@@ -64,8 +67,30 @@ export default function Home() {
   };
 
   useEffect(() => {
-    const q = query(collection(db, "messages"), orderBy("timestamp", "desc"));
+    // Buscar categorias do Firestore
+    const fetchCategories = async () => {
+      try {
+        const categoriesCollection = collection(db, "categories");
+        const categoriesSnapshot = await getDocs(categoriesCollection);
+        const categoriesList: string[] = [];
+        categoriesSnapshot.forEach((doc) => {
+          const categoryData = doc.data();
+          categoriesList.push(categoryData.category); // Considerando que cada documento tem um campo "category"
+        });
+        setCategories(categoriesList);
+        // Definir a primeira categoria como a categoria inicial
+        if (categoriesList.length > 0) {
+          setCategory(categoriesList[0]);
+        }
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
 
+    fetchCategories();
+
+    // Buscar mensagens do Firestore
+    const q = query(collection(db, "messages"), orderBy("timestamp", "desc"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const messageData: Message[] = [];
       querySnapshot.forEach((doc) => {
@@ -151,16 +176,23 @@ export default function Home() {
 
           <button onClick={() => setIsModalOpen(true)}>Nova nota</button>
           <label htmlFor="Filtro">Filtrar</label>
-          <select
-            name="showOnly"
-            id="showOnly"
-            value={filterCategory}
-            onChange={(e) => setFilterCategory(e.target.value)}
-          >
-            <option value="Todos">Todos</option>
-            <option value="Links">Links</option>
-            <option value="Paleta de Cor">Paleta de Cor</option>
-          </select>
+          <div className={styles.filterSection}>
+            <select
+              name="showOnly"
+              id="showOnly"
+              value={filterCategory}
+              onChange={(e) => setFilterCategory(e.target.value)}
+            >
+              {categories.map((cat, index) => (
+                <option key={index} value={cat}>
+                  {cat}
+                </option>
+              ))}
+            </select>
+            <button onClick={() => setIsModaCategorylOpen(true)}>
+              Nova categoria
+            </button>
+          </div>
         </div>
       </div>
       <div className={styles.messageArea}>
@@ -172,7 +204,7 @@ export default function Home() {
           messages
             .filter(
               (message) =>
-                filterCategory === "Todos" ||
+                filterCategory === "Geral" ||
                 message.category === filterCategory
             )
             .map((message, index) => (
@@ -233,6 +265,15 @@ export default function Home() {
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+        onSendText={handleSendText}
+        text={text}
+        setText={setText}
+        category={category}
+        setCategory={setCategory}
+      />
+      <ModalCategory
+        isOpen={isModaCategorylOpen}
+        onClose={() => setIsModaCategorylOpen(false)}
         onSendText={handleSendText}
         text={text}
         setText={setText}
