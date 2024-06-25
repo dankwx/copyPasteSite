@@ -1,3 +1,5 @@
+import { getAuth } from 'firebase/auth';
+
 const firebaseConfig = {
   apiKey: "AIzaSyA7bXwlayvuyTH409bHegkYi4ZUolGKH2A",
   authDomain: "colartextosite.firebaseapp.com",
